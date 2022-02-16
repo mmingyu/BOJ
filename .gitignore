@@ -1,0 +1,7 @@
+*.json
+a.out
+input
+test.*
+template.cpp
+.cph
+*.bin
