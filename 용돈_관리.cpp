@@ -21,7 +21,7 @@ int main() {
     int n, m; scanf("%d %d", &n, &m);
     arr.resize(n);
     for (auto &x : arr) scanf("%d", &x);
-    int l = -1, r = 1e8 + 1;
+    int l = -1, r = 1e9 + 1;
     while (l + 1 < r) {
         if (check(md) <= m) r = md;
         else l = md;
