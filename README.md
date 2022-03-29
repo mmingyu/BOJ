@@ -1,2 +1,2 @@
 # ps
-Problem solving log
+잡다한 ps코드를 다 모아봤어요
