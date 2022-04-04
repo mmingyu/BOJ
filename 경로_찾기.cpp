@@ -21,7 +21,7 @@ int main() {
         if (!arr[i][j]) dp[0][i][j] = (dp[0][i][j] + dp[0][i - 1][j] + dp[0][i][j - 1]) % MOD;
     }
     for (int k = s; k <= c; k++) {
-        for (int l = 1; l <= c; l++) {
+        for (int l = 1; l <= k - s + 1; l++) {
             for (int i = 1; i <= n; i++) {
                 for (int j = 1; j <= m; j++) {
                     if (arr[i][j] == k) {
