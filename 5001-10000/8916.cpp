@@ -21,12 +21,12 @@ ll solve(int s, int e) {
         if (arr[i] > arr[s]) hi.push_back(arr[i]);
         else lo.push_back(arr[i]);
     }
-    for (int i = 0; i < sz(hi); i++) arr[i + s + 1] = hi[i];
-    for (int i = 0; i < sz(lo); i++) arr[i + s + 1 + sz(hi)] = lo[i];
-    ll l = solve(s + 1, s + 1 + sz(hi));
-    ll r = solve(s + 1 + sz(hi), e);
-    ll cnt = com(sz(hi) + sz(lo), sz(hi));
-    return (((l * r) % MOD) * cnt) % MOD;
+    for (int i = 0; i < sz(lo); i++) arr[i + s + 1] = lo[i];
+    for (int i = 0; i < sz(hi); i++) arr[i + s + 1 + sz(lo)] = hi[i];
+    ll l = solve(s + 1, s + 1 + sz(lo));
+    ll r = solve(s + 1 + sz(lo), e);
+    ll mcom = com(sz(hi) + sz(lo), sz(hi));
+    return (((l * r) % MOD) * mcom) % MOD;
 }
 
 int main() {
