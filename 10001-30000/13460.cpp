@@ -1,22 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
+using Point = pair<int, int>;
+#define red first
+#define blue second
 #define r first
 #define c second
 
-using Point = pair<int, int>;
+string mat[12];
+Point dir[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+int dist[12][12][12][12];
+
+int n, m;
 Point operator*(const Point &a, const Point &b) { return {a.r * b.r, a.c * b.c}; }
 Point operator-(const Point &a, const Point &b) { return {a.r - b.r, a.c - b.c}; }
 Point operator+(const Point &a, const Point &b) { return {a.r + b.r, a.c + b.c}; }
-
-string mat[12];
-Point dir[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 Point goal;
-int dist[12][12][12][12], n, m;
 bool goal_in;
 
-
 Point get_position(Point cur, int d) {
-    while (goal != cur) {
+    goal_in = false;
+    while (true) {
+        if (goal == cur) goal_in = true;
         Point nxt = cur + dir[d];
         if (mat[nxt.r][nxt.c] == '#') break;
         cur = nxt;
@@ -25,31 +29,28 @@ Point get_position(Point cur, int d) {
 }
 
 int bfs() {
-    int ans = 1e8;
     memset(dist, -1, sizeof(dist));
     queue<pair<Point, Point>> q;
     pair<Point, Point> in;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            if (mat[i][j] == 'R') in.first = {i, j};
-            if (mat[i][j] == 'B') in.second = {i, j};
+            if (mat[i][j] == 'R') in.red = {i, j};
+            if (mat[i][j] == 'B') in.blue = {i, j};
             if (mat[i][j] == 'O') goal = {i, j};
         }
     }
     q.push(in);
-    dist[in.first.r][in.first.c][in.second.r][in.second.c] = 0;
+    dist[in.red.r][in.red.c][in.blue.r][in.blue.c] = 0;
+
     while (!q.empty()) {
         auto [red, blue] = q.front(); q.pop();
-        const int &cur_d = dist[red.r][red.c][blue.r][blue.c];
+        int &cur_d = dist[red.r][red.c][blue.r][blue.c];
         if (cur_d >= 10) break;
-
         for (int i = 0; i < 4; i++) {
             Point n_red = get_position(red, i);
+            bool red_goal = goal_in;
             Point n_blue = get_position(blue, i);
-            
-
-            if (n_blue == goal) continue;
-            if (n_red == goal) return cur_d + 1;   
+            bool blue_goal = goal_in;
             
             if (n_red == n_blue) {
                 Point d = dir[i];
@@ -58,8 +59,11 @@ int bfs() {
             }
 
             int &nxt_d = dist[n_red.r][n_red.c][n_blue.r][n_blue.c];
-            if (nxt_d != -1) continue;
+            if (!blue_goal && red_goal) return cur_d + 1;
+            if (blue_goal || nxt_d != -1) continue;
             nxt_d = cur_d + 1;
+
+            if (red_goal) return nxt_d;
             q.push({n_red, n_blue});
         }
     }
