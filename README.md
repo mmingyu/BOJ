@@ -1,7 +1,5 @@
 # BOJ 정답 코드 (2022.01 ~ )
 
----
-
 핸들 : [msphere](https://www.acmicpc.net/user/msphere)
 
 문제의 이름은 해당 문제의 번호입니다. 
